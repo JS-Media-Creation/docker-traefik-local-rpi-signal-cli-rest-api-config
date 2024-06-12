@@ -1,0 +1,21 @@
+services:
+  signal-cli-rest-api:
+    image: bbernhard/signal-cli-rest-api:0.84
+    container_name: signal-cli-rest-api
+    environment:
+      - MODE=normal
+    volumes:
+      - "signal-cli-config:/home/.local/share/signal-cli"
+    networks:
+      - traefik_proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.signal-cli-rest-api.rule=Host(`signal-cli-rest-api.rpi.local`)"
+      - "traefik.http.services.signal-cli-rest-api.loadbalancer.server.port=8080"
+
+volumes:
+  signal-cli-config:
+
+networks:
+  traefik_proxy:
+    external: true
